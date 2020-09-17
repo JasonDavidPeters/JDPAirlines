@@ -1,7 +1,5 @@
 package com.jasondavidpeters.JDPAirlines;
 
-import java.util.ArrayList;
-
 import com.jasondavidpeters.JDPAirlines.gui.HomeScene;
 
 import javafx.application.Application;
@@ -27,6 +25,7 @@ public class Main extends Application {
 	launch(args);
     }
 
+    @SuppressWarnings("exports")
     @Override
     public void start(Stage stage) throws Exception {
 
@@ -81,10 +80,12 @@ public class Main extends Application {
 	});
     }
 
+    @SuppressWarnings("exports")
     public void resizeNodes(Scene scene) {
 	((HomeScene) scene).getImage().setFitWidth((screenWidth / 2));
 	((HomeScene) scene).getImage().setFitHeight((screenHeight / 2));
 	((HomeScene) scene).getSearchBox().setPrefWidth((screenWidth / 2));
+	((HomeScene) scene).getRoundTripsBox().setPrefWidth((screenWidth / 2));
 	((HomeScene) scene).setFont(new Font(((HomeScene) scene).getFont().getName(), 0.03 * screenWidth));
 	ObservableList<Node> f = ((HomeScene) scene).getNavbar().getChildren();
 
