@@ -21,17 +21,19 @@ public class HomeScene extends Scene {
     
     private ImageView image;
     private TextField searchBox;
+    private Font font;
+    private VBox navigationBar;
 
     public HomeScene(Parent layout, double width, double height) {
 	super(layout, width, height);
 	//window - stage
 	//contents - scene
 
-	
+	font = new Font(null, 0.05*width);
 	ToggleGroup radioBtns = new ToggleGroup();
 	
-	RadioButton oneWay = new RadioButton("One Way\t");
-	RadioButton roundTrip = new RadioButton("Round Trip\t");
+	RadioButton oneWay = new RadioButton("One Way");
+	RadioButton roundTrip = new RadioButton("Round Trip");
 	
 	oneWay.setToggleGroup(radioBtns);
 	roundTrip.setToggleGroup(radioBtns);
@@ -51,19 +53,19 @@ public class HomeScene extends Scene {
 	 * My Flights
 	 */
 	
-	VBox navigationBar = new VBox();
-	VBox centerGroup = new VBox(); // Vertical grouping
+	navigationBar = new VBox();
+	VBox centerGroup = new VBox(5); // Vertical grouping
 	HBox searchBar = new HBox(); // Horizontal grouping of search bar and search button
-	HBox flightOptions = new HBox();
+	HBox flightOptions = new HBox(5);
 	
 	Hyperlink homeLink = new Hyperlink("Home");
-	homeLink.setFont(new Font(null, 24));
+	homeLink.setFont(font);
 	
 	Hyperlink myAccount = new Hyperlink("My Account");
-	myAccount.setFont(new Font(null, 24));
+	myAccount.setFont(font);
 	
 	Hyperlink myFlights = new Hyperlink("My Flights");
-	myFlights.setFont(new Font(null, 24));
+	myFlights.setFont(font);
 	
 	
 	navigationBar.getChildren().add(homeLink);
@@ -79,6 +81,7 @@ public class HomeScene extends Scene {
 	flightOptions.getChildren().add(oneWay);
 	flightOptions.getChildren().add(roundTrip);
 	centerGroup.getChildren().add(image); // Add the logo to the logo bar group
+	
 	centerGroup.getChildren().add(flightOptions);
 	centerGroup.getChildren().add(searchBar); // Add the search bar group to the logo bar group
 	
@@ -102,6 +105,15 @@ public class HomeScene extends Scene {
     }
     public TextField getSearchBox() {
 	return this.searchBox;
+    }
+    public Font getFont() {
+	return this.font;
+    }
+    public void setFont(Font font) {
+	this.font=font;
+    }
+    public VBox getNavbar() { 
+	return this.navigationBar;
     }
 
 }

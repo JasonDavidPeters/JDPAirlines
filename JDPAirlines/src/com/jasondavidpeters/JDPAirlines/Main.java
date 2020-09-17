@@ -1,10 +1,16 @@
 package com.jasondavidpeters.JDPAirlines;
 
+import java.util.ArrayList;
+
 import com.jasondavidpeters.JDPAirlines.gui.HomeScene;
 
 import javafx.application.Application;
+import javafx.collections.ObservableList;
+import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Hyperlink;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 public class Main extends Application {
@@ -74,11 +80,21 @@ public class Main extends Application {
 	    resizeNodes(homeScene);
 	});
     }
-    
+
     public void resizeNodes(Scene scene) {
-	 ((HomeScene) scene).getImage().setFitWidth((screenWidth / 2));
-	 ((HomeScene) scene).getImage().setFitHeight((screenHeight / 2));
-	 ((HomeScene) scene).getSearchBox().setPrefWidth((screenWidth / 2));
+	((HomeScene) scene).getImage().setFitWidth((screenWidth / 2));
+	((HomeScene) scene).getImage().setFitHeight((screenHeight / 2));
+	((HomeScene) scene).getSearchBox().setPrefWidth((screenWidth / 2));
+	((HomeScene) scene).setFont(new Font(((HomeScene) scene).getFont().getName(), 0.03 * screenWidth));
+	ObservableList<Node> f = ((HomeScene) scene).getNavbar().getChildren();
+
+	for (Node n : f) {
+	    if (n instanceof Hyperlink) {
+		Hyperlink newLink = (Hyperlink) n;
+		newLink.setFont(((HomeScene) scene).getFont());
+		n = newLink;
+	    }
+	}
     }
 
 }
