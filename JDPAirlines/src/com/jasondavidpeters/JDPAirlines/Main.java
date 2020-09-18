@@ -44,6 +44,9 @@ public class Main extends Application {
 	
 	homeScene = new HomeScene(this, new BorderPane(), screenWidth, screenHeight);
 	accountScene = new AccountScene(this, new BorderPane(), screenWidth, screenHeight);
+	
+	resizeNodes(homeScene);
+	resizeNodes(accountScene);
 
 	stage.setScene(homeScene);
 	
@@ -64,7 +67,6 @@ public class Main extends Application {
 		return;
 	    }
 	    screenWidth = stage.getWidth();
-	    stage.setWidth(screenWidth);
 	    resizeNodes(stage.getScene());
 	});
 	stage.heightProperty().addListener(e -> {
@@ -82,7 +84,6 @@ public class Main extends Application {
 		return;
 	    }
 	    screenHeight = stage.getHeight();
-	    stage.setHeight(screenHeight);
 	    resizeNodes(stage.getScene());
 	});
     }
@@ -119,5 +120,10 @@ public class Main extends Application {
     public Stage getStage() {
 	return this.stage;
     }
-
+    public void setScreenWidth(double screenWidth) {
+	this.screenWidth=screenWidth;
+    }
+    public void setScreenHeight(double screenHeight) {
+	this.screenHeight=screenHeight;
+    }
 }

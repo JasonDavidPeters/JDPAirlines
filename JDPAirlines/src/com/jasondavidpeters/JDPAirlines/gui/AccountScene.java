@@ -13,8 +13,10 @@ public class AccountScene extends CustomScene {
 	    main.getStage().setScene(this);
 	});
 	getHomeLink().setOnAction(e -> {
-	    main.resizeNodes(main.getHomeScene());
+	    main.setScreenWidth(main.getStage().getWidth());
+	    main.setScreenHeight(main.getStage().getHeight());
 	    main.getStage().setScene(main.getHomeScene());
+	    main.resizeNodes(main.getHomeScene());
 	});
     }
 

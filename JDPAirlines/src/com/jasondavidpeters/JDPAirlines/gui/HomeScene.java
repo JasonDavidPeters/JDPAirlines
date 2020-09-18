@@ -2,7 +2,6 @@ package com.jasondavidpeters.JDPAirlines.gui;
 
 import com.jasondavidpeters.JDPAirlines.Main;
 
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
@@ -11,9 +10,15 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.BorderStroke;
+import javafx.scene.layout.BorderStrokeStyle;
+import javafx.scene.layout.BorderWidths;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 
 public class HomeScene extends CustomScene {
 
@@ -51,6 +56,9 @@ public class HomeScene extends CustomScene {
 	    main.getStage().setScene(this);
 	});
 	getMyAccountLink().setOnAction(e -> {
+	    main.setScreenWidth(main.getStage().getWidth());
+	    main.setScreenHeight(main.getStage().getHeight());
+	    main.resizeNodes(main.getAccountScene());
 	    main.getStage().setScene(main.getAccountScene());
 	});
 
@@ -84,17 +92,17 @@ public class HomeScene extends CustomScene {
 	centerGroup.setAlignment(Pos.CENTER);
 	flightOptions.setAlignment(Pos.CENTER);
 
-	BorderPane.setAlignment(centerGroup, Pos.CENTER);
+	//BorderPane.setAlignment(centerGroup, Pos.CENTER);
 	((BorderPane) layout).setCenter(centerGroup);
 	// Put the navigation bar to the left of the application
 
-	centerGroup.setMaxWidth(width);
-	centerGroup.setPadding(new Insets(0, 0, 0, -width / 4)); // top, right, bottom, left
+//	centerGroup.setMaxWidth(width);
+//	centerGroup.setPadding(new Insets(0, 0, 0, -width / 4)); // top, right, bottom, left
 
-//	getNavbar().setBorder(new Border(new BorderStroke(Color.BLACK, 
-//	            BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
-//	centerGroup.setBorder(new Border(new BorderStroke(Color.BLACK, 
-//	            BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+	getNavbar().setBorder(new Border(new BorderStroke(Color.BLACK, 
+	            BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+	centerGroup.setBorder(new Border(new BorderStroke(Color.RED, 
+	            BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
 
 	roundTrip.selectedProperty().addListener(e -> {
 	    if (roundTrip.isSelected()) {
