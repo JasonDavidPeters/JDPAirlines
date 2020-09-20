@@ -17,10 +17,10 @@ public class Main extends Application {
 
     private double screenWidth;
     private double screenHeight;
-    private static final double MAX_HEIGHT = 1200;
-    private static final double MIN_HEIGHT = 450;
-    private static final double MAX_WIDTH = 1600; // get users max resolution width
-    private static final double MIN_WIDTH = 800;
+    private static double MAX_HEIGHT = 1200;
+    private static double MIN_HEIGHT = 600;
+    private static double MAX_WIDTH = 1800; // get users max resolution width
+    private static double MIN_WIDTH = 800;
     public static final String APPLICATION_NAME = "JDP Airlines";
     private double posX, posY;
     private AccountScene accountScene;
@@ -35,24 +35,31 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) throws Exception {
 	this.stage = stage;
-	
+
 	stage.setWidth(MIN_WIDTH);
 	stage.setHeight(MIN_HEIGHT);
 	screenWidth = stage.getWidth();
 	screenHeight = stage.getHeight();
-	stage.setTitle(APPLICATION_NAME);
-	
-	homeScene = new HomeScene(this, new BorderPane(), screenWidth, screenHeight);
-	accountScene = new AccountScene(this, new BorderPane(), screenWidth, screenHeight);
-	
+	stage.setTitle(APPLICATION_NAME + " " + stage.getWidth() + " " + stage.getHeight());
+
+	BorderPane bp = new BorderPane();
+	BorderPane bp1 = new BorderPane();
+
+	homeScene = new HomeScene(this, bp, screenWidth, screenHeight);
+	accountScene = new AccountScene(this, bp1, screenWidth, screenHeight);
+
 	resizeNodes(homeScene);
 	resizeNodes(accountScene);
 
 	stage.setScene(homeScene);
-	
-	stage.show();
+
+	stage.setResizable(false);
+//	stage.minWidthProperty().bind(stage.getScene().heightProperty().);
+//	stage.minHeightProperty().bind(stage.getScene().widthProperty());
+	stage.sizeToScene();
 
 	stage.widthProperty().addListener(e -> {
+	    // System.out.println("width being changed");
 	    if (stage.getWidth() >= MAX_WIDTH) {
 		screenWidth = MAX_WIDTH;
 		stage.setWidth(screenWidth);
@@ -61,15 +68,19 @@ public class Main extends Application {
 	    }
 	    if (stage.getWidth() <= MIN_WIDTH) {
 		screenWidth = MIN_WIDTH;
-		stage.centerOnScreen();
+		// stage.centerOnScreen();
 		stage.setWidth(screenWidth);
 		resizeNodes(stage.getScene());
 		return;
 	    }
 	    screenWidth = stage.getWidth();
+	    System.out.println(screenWidth);
+	    stage.setWidth(stage.widthProperty().get());
 	    resizeNodes(stage.getScene());
+
 	});
 	stage.heightProperty().addListener(e -> {
+	    System.out.println("height being changed");
 	    if (stage.getHeight() >= MAX_HEIGHT) {
 		screenHeight = MAX_HEIGHT;
 		stage.setHeight(screenHeight);
@@ -78,7 +89,7 @@ public class Main extends Application {
 	    }
 	    if (stage.getHeight() <= MIN_HEIGHT) {
 		screenHeight = MIN_HEIGHT;
-		stage.centerOnScreen();
+		// stage.centerOnScreen();
 		stage.setHeight(screenHeight);
 		resizeNodes(stage.getScene());
 		return;
@@ -86,6 +97,7 @@ public class Main extends Application {
 	    screenHeight = stage.getHeight();
 	    resizeNodes(stage.getScene());
 	});
+	stage.show();
     }
 
     public void resizeNodes(Scene scene) {
@@ -95,7 +107,12 @@ public class Main extends Application {
 	    ((HomeScene) scene).getSearchBox().setPrefWidth((screenWidth / 2));
 	    ((HomeScene) scene).getRoundTripsBox().setPrefWidth((screenWidth / 2));
 	}
+	if (scene instanceof AccountScene) {
+	    ((AccountScene) scene).getUsernameBox().setPrefWidth((screenWidth / 2));
+	    ((AccountScene) scene).getPasswordBox().setPrefWidth((screenWidth / 2));
+	}
 	if (scene instanceof CustomScene) {
+
 	    ((CustomScene) scene).setFont(new Font(((CustomScene) scene).getFont().getName(), 0.03 * screenWidth));
 	    ObservableList<Node> f = ((CustomScene) scene).getNavbar().getChildren();
 	    for (Node n : f) {
@@ -120,10 +137,20 @@ public class Main extends Application {
     public Stage getStage() {
 	return this.stage;
     }
+
     public void setScreenWidth(double screenWidth) {
-	this.screenWidth=screenWidth;
+	this.screenWidth = screenWidth;
     }
+
     public void setScreenHeight(double screenHeight) {
-	this.screenHeight=screenHeight;
+	this.screenHeight = screenHeight;
+    }
+
+    public double getScreenWidth() {
+	return screenWidth;
+    }
+
+    public double getScreenHeight() {
+	return screenHeight;
     }
 }

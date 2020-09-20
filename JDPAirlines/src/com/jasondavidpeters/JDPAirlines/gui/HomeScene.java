@@ -10,27 +10,24 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.BorderStroke;
-import javafx.scene.layout.BorderStrokeStyle;
-import javafx.scene.layout.BorderWidths;
-import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
+import javafx.stage.Stage;
 
 public class HomeScene extends CustomScene {
 
     private ImageView image;
     private TextField searchBox;
     private TextField roundTripSearchBox;
+    private VBox centerGroup;
 
     public HomeScene(Main main, Parent layout, double width, double height) {
 	super(main, layout, width, height);
 	// window - stage
 	// contents - scene
 
+	BorderPane bp = (BorderPane) layout;
 	ToggleGroup radioBtns = new ToggleGroup();
 
 	RadioButton oneWay = new RadioButton("One Way");
@@ -40,78 +37,88 @@ public class HomeScene extends CustomScene {
 	roundTrip.setToggleGroup(radioBtns);
 
 	Image img = new Image("/logo.png");
-
+//
 	searchBox = new TextField();
 	searchBox.setPromptText("Search..."); // greyed out promp text
 	roundTripSearchBox = new TextField("");
 
-	image = new ImageView(img);
-	image.setPreserveRatio(true);
 	Button searchButton = new Button("O");
 	Button invisBtn = new Button("O");
-
+//
 	invisBtn.setVisible(false);
 
 	getHomeLink().setOnAction(e -> {
-	    main.getStage().setScene(this);
+	    main.getStage().setScene(main.getHomeScene());
 	});
 	getMyAccountLink().setOnAction(e -> {
-	    main.setScreenWidth(main.getStage().getWidth());
-	    main.setScreenHeight(main.getStage().getHeight());
+//	    main.getStage().setWidth(main.getHomeScene().getWidth());
 	    main.resizeNodes(main.getAccountScene());
 	    main.getStage().setScene(main.getAccountScene());
 	});
 
-	VBox centerGroup = new VBox(5); // Vertical grouping
+	centerGroup = new VBox(); // Vertical grouping
+
 	HBox searchBar = new HBox(); // Horizontal grouping of search bar and search button
 	HBox roundTripBar = new HBox();
 	HBox flightOptions = new HBox(5);
-
+	image = new ImageView(img);
+	image.setPreserveRatio(true);
 	/*
 	 * TODO: minimize the gap between the navigation bar and logo
 	 */
+//
+//	searchBox.setPrefWidth(width);
+//	roundTripSearchBox.setPrefWidth(width);
+	searchBar.getChildren().addAll(searchBox, searchButton); // Add the search button to the bar
+	
+	roundTripBar.getChildren().addAll(roundTripSearchBox, invisBtn);
 
-	searchBox.setPrefWidth(width);
-	roundTripSearchBox.setPrefWidth(width);
+	flightOptions.getChildren().addAll(oneWay, roundTrip);
 
-	searchBar.getChildren().add(searchBox); // Add [----] the box to the bar
-	searchBar.getChildren().add(searchButton); // Add the search button to the bar
-	roundTripBar.getChildren().add(roundTripSearchBox);
-	roundTripBar.getChildren().add(invisBtn);
+	// centerGroup.getChildren().add(image); // Add the logo to the logo bar group
 
-	flightOptions.getChildren().add(oneWay);
-	flightOptions.getChildren().add(roundTrip);
-	centerGroup.getChildren().add(image); // Add the logo to the logo bar group
-
-	centerGroup.getChildren().add(flightOptions);
-	centerGroup.getChildren().add(searchBar); // Add the search bar group to the logo bar group
-
-	searchBar.setAlignment(Pos.CENTER);
 	roundTripBar.setAlignment(Pos.CENTER);
+//	
+	roundTripBar.setVisible(false);
+	centerGroup.getChildren().addAll(image,flightOptions, searchBar,roundTripBar);
+	
+	roundTrip.selectedProperty().addListener(e -> {
+	    if (roundTrip.isSelected()) {
+		roundTripBar.setVisible(true);
+	    } else if (!roundTrip.isSelected()) {
+		roundTripBar.setVisible(false);
+	    }
 
-	centerGroup.setAlignment(Pos.CENTER);
+	});
+	searchBar.setAlignment(Pos.CENTER);
 	flightOptions.setAlignment(Pos.CENTER);
+	centerGroup.setAlignment(Pos.CENTER);
+//	flightOptions.setAlignment(Pos.CENTER);
+//	
 
-	//BorderPane.setAlignment(centerGroup, Pos.CENTER);
-	((BorderPane) layout).setCenter(centerGroup);
+	// centerGroup.setPrefSize(main.getScreenWidth(), main.getScreenHeight());
+	// BorderPane.setAlignment(centerGroup, Pos.CENTER);
+	// centerGroup.setPadding(new Insets(100,100,100,100));
+
+	// bp.setMaxSize(main.getScreenWidth()/2, main.getScreenHeight()/2);
+
+	// BorderPane.setAlignment(centerGroup, Pos.CENTER);
+	// bp.setPadding(new Insets(50,50,50,50));
+	bp.setCenter(centerGroup);
+	
+	// centerGroup.setAlignment(Pos.CENTER);
+
 	// Put the navigation bar to the left of the application
 
 //	centerGroup.setMaxWidth(width);
 //	centerGroup.setPadding(new Insets(0, 0, 0, -width / 4)); // top, right, bottom, left
 
-	getNavbar().setBorder(new Border(new BorderStroke(Color.BLACK, 
-	            BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
-	centerGroup.setBorder(new Border(new BorderStroke(Color.RED, 
-	            BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
-
-	roundTrip.selectedProperty().addListener(e -> {
-	    if (roundTrip.isSelected()) {
-		centerGroup.getChildren().add(roundTripBar);
-	    } else if (!roundTrip.isSelected()) {
-		centerGroup.getChildren().remove(roundTripBar);
-	    }
-
-	});
+//	getNavbar().setBorder(new Border(
+//		new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+//	centerGroup.setBorder(new Border(
+//		new BorderStroke(Color.RED, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(30))));
+//	bp.setBorder(new Border(
+//		new BorderStroke(Color.PURPLE, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(30))))
 
     }
 
@@ -127,4 +134,7 @@ public class HomeScene extends CustomScene {
 	return this.roundTripSearchBox;
     }
 
+    public VBox getCenterGroup() {
+	return centerGroup;
+    }
 }
