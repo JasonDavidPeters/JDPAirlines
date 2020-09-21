@@ -1,5 +1,6 @@
 package com.jasondavidpeters.JDPAirlines;
 
+import com.jasondavidpeters.JDPAirlines.dbms.Connector;
 import com.jasondavidpeters.JDPAirlines.gui.AccountScene;
 import com.jasondavidpeters.JDPAirlines.gui.CustomScene;
 import com.jasondavidpeters.JDPAirlines.gui.HomeScene;
@@ -98,6 +99,7 @@ public class Main extends Application {
 	    resizeNodes(stage.getScene());
 	});
 	stage.show();
+	Connector.connect();
     }
 
     public void resizeNodes(Scene scene) {
