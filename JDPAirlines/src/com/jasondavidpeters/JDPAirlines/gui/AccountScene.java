@@ -48,7 +48,7 @@ public class AccountScene extends CustomScene {
 	Hyperlink registerBtn = new Hyperlink("Register");
 
 	loginBtn.setOnAction(e -> {
-
+	    boolean userCorrect,passCorrect;
 	    /*
 	     * Validation check do both fields contain information? do both fields meet
 	     * criteria (username length, special characters etc...) username must be 3-16
@@ -57,42 +57,51 @@ public class AccountScene extends CustomScene {
 	     * error message
 	     */
 	    Pattern usernameValidation = Pattern.compile("^[A-Za-z]{3,16}$");
-	    Pattern passwordValidation = Pattern.compile("([A-Za-z]{5,20})([!@#$%^&*()re+])");
+	    Pattern passwordValidation = Pattern.compile("([A-Za-z0-9]{5,16})([?.,;'!@#$%^&*()re+])");
 	    String username = usernameField.getText();
 	    String password = passwordField.getText();
 	    Matcher userMatcher = usernameValidation.matcher(username);
 
 	    if (userMatcher.find()) {
-
+		userCorrect=true;
 		errorMessage.setVisible(false);
 	    } else {
+		userCorrect=false;
 		errorMessage.setText("Username must be 3-16 characters long and contain no special characters.");
 		errorMessage.setVisible(true);
+		return;
 
 	    }
 	    Matcher passmatcher = passwordValidation.matcher(password);
 	    if (passmatcher.find()) {
-
+		passCorrect=true;
 		errorMessage.setVisible(false);
 	    } else {
+		passCorrect=false;
 		errorMessage.setText("Password must be 5-16 characters long and contain at least 1 special character.");
 		errorMessage.setVisible(true);
+		return;
 
 	    }
-//	    if (usernameField.getText().length() < 3) {
-//		errorMessage.setText("Username must be longer than 2 characters!");
-//		errorMessage.setVisible(true);
-//	    } else if (usernameField.getText().length() > 16) {
-//		errorMessage.setText("Username cannot be longer than 16 characters");
-//		errorMessage.setVisible(true);
-//	    } else if (usernameField.getText().contains(s) ) { 
-//		
-//	    }
+	    if (userCorrect && passCorrect) { 
+		// initiate login sequence
+	    }
 
 	});
 
 	registerBtn.setOnAction(e -> {
-
+	    // Load new scene for registration
+	    /*
+	     * First name
+	     * Last name
+	     * e-mail
+	     * phone number
+	     * zip code
+	     * username
+	     * password
+	     */
+	    main.resizeNodes(main.getRegisterScene());
+	    main.getStage().setScene(main.getRegisterScene());
 	});
 
 	HBox links = new HBox(5);
@@ -116,17 +125,6 @@ public class AccountScene extends CustomScene {
 
 	bp.setCenter(centerGroup);
 
-	getMyAccountLink().setOnAction(e -> {
-	    main.getStage().setScene(main.getAccountScene());
-
-	});
-	getHomeLink().setOnAction(e -> {
-	    main.resizeNodes(main.getHomeScene());
-	    main.getStage().setScene(main.getHomeScene());
-	    System.out.println(main.getHomeScene().getCenterGroup().getWidth());
-//	    System.out.println(main.getHomeScene().getCenterGroup().getParent());
-//	    System.out.println( main.getHomeScene().getCenterGroup().getWidth());
-	});
     }
 
     public TextField getUsernameBox() {

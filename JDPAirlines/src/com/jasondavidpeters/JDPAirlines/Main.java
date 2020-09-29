@@ -4,6 +4,7 @@ import com.jasondavidpeters.JDPAirlines.dbms.Connector;
 import com.jasondavidpeters.JDPAirlines.gui.AccountScene;
 import com.jasondavidpeters.JDPAirlines.gui.CustomScene;
 import com.jasondavidpeters.JDPAirlines.gui.HomeScene;
+import com.jasondavidpeters.JDPAirlines.gui.RegisterScene;
 
 import javafx.application.Application;
 import javafx.collections.ObservableList;
@@ -26,6 +27,7 @@ public class Main extends Application {
     private double posX, posY;
     private AccountScene accountScene;
     private HomeScene homeScene;
+    private RegisterScene registerScene;
     private Stage stage;
 
     public static void main(String[] args) {
@@ -41,13 +43,11 @@ public class Main extends Application {
 	stage.setHeight(MIN_HEIGHT);
 	screenWidth = stage.getWidth();
 	screenHeight = stage.getHeight();
-	stage.setTitle(APPLICATION_NAME + " " + stage.getWidth() + " " + stage.getHeight());
+	stage.setTitle(APPLICATION_NAME);
 
-	BorderPane bp = new BorderPane();
-	BorderPane bp1 = new BorderPane();
-
-	homeScene = new HomeScene(this, bp, screenWidth, screenHeight);
-	accountScene = new AccountScene(this, bp1, screenWidth, screenHeight);
+	homeScene = new HomeScene(this, new BorderPane(), screenWidth, screenHeight);
+	accountScene = new AccountScene(this, new BorderPane(), screenWidth, screenHeight);
+	registerScene = new RegisterScene(this, new BorderPane(), screenWidth, screenHeight);
 
 	resizeNodes(homeScene);
 	resizeNodes(accountScene);
@@ -113,6 +113,8 @@ public class Main extends Application {
 	    ((AccountScene) scene).getUsernameBox().setPrefWidth((screenWidth / 2));
 	    ((AccountScene) scene).getPasswordBox().setPrefWidth((screenWidth / 2));
 	}
+	if (scene instanceof RegisterScene) {
+	}
 	if (scene instanceof CustomScene) {
 
 	    ((CustomScene) scene).setFont(new Font(((CustomScene) scene).getFont().getName(), 0.03 * screenWidth));
@@ -130,6 +132,9 @@ public class Main extends Application {
 
     public AccountScene getAccountScene() {
 	return accountScene;
+    }
+    public RegisterScene getRegisterScene() {
+	return registerScene;
     }
 
     public HomeScene getHomeScene() {

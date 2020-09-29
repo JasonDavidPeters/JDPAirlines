@@ -47,15 +47,6 @@ public class HomeScene extends CustomScene {
 //
 	invisBtn.setVisible(false);
 
-	getHomeLink().setOnAction(e -> {
-	    main.getStage().setScene(main.getHomeScene());
-	});
-	getMyAccountLink().setOnAction(e -> {
-//	    main.getStage().setWidth(main.getHomeScene().getWidth());
-	    main.resizeNodes(main.getAccountScene());
-	    main.getStage().setScene(main.getAccountScene());
-	});
-
 	centerGroup = new VBox(); // Vertical grouping
 
 	HBox searchBar = new HBox(); // Horizontal grouping of search bar and search button

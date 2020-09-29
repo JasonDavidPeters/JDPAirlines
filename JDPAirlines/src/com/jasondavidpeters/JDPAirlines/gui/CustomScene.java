@@ -17,6 +17,7 @@ public class CustomScene extends Scene {
 
     private Hyperlink myAccount;
     private Hyperlink homeLink;
+    private Hyperlink flightsLink;
 
     private Font font;
 
@@ -48,6 +49,18 @@ public class CustomScene extends Scene {
 
 	((BorderPane) layout).setLeft(navigationBar);
 	
+	getMyAccountLink().setOnAction(e -> {
+	    main.resizeNodes(main.getAccountScene());
+	    main.getStage().setScene(main.getAccountScene());
+	});
+	getHomeLink().setOnAction(e -> {
+	    main.resizeNodes(main.getHomeScene());
+	    main.getStage().setScene(main.getHomeScene());
+	});
+//	getFlightsLink().setOnAction(e -> {
+//	    
+//	});
+	
 	
     }
 
@@ -67,6 +80,9 @@ public class CustomScene extends Scene {
     }
     public Hyperlink getHomeLink() {
 	return homeLink;
+    }
+    public Hyperlink getFlightsLink() {
+	return flightsLink;
     }
     public Parent getLayout() {
 	return this.layout;
