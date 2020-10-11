@@ -29,6 +29,7 @@ public class Main extends Application {
     private HomeScene homeScene;
     private RegisterScene registerScene;
     private Stage stage;
+    private Connector connector;
 
     public static void main(String[] args) {
 	launch(args);
@@ -44,6 +45,8 @@ public class Main extends Application {
 	screenWidth = stage.getWidth();
 	screenHeight = stage.getHeight();
 	stage.setTitle(APPLICATION_NAME);
+	connector = new Connector();
+	connector.connect();
 
 	homeScene = new HomeScene(this, new BorderPane(), screenWidth, screenHeight);
 	accountScene = new AccountScene(this, new BorderPane(), screenWidth, screenHeight);
@@ -99,7 +102,6 @@ public class Main extends Application {
 	    resizeNodes(stage.getScene());
 	});
 	stage.show();
-	Connector.connect();
     }
 
     public void resizeNodes(Scene scene) {
@@ -159,5 +161,8 @@ public class Main extends Application {
 
     public double getScreenHeight() {
 	return screenHeight;
+    }
+    public Connector getConnector() {
+	return connector;
     }
 }
