@@ -3,6 +3,7 @@ package com.jasondavidpeters.JDPAirlines;
 import com.jasondavidpeters.JDPAirlines.dbms.Connector;
 import com.jasondavidpeters.JDPAirlines.gui.AccountScene;
 import com.jasondavidpeters.JDPAirlines.gui.CustomScene;
+import com.jasondavidpeters.JDPAirlines.gui.FlightScene;
 import com.jasondavidpeters.JDPAirlines.gui.HomeScene;
 import com.jasondavidpeters.JDPAirlines.gui.RegisterScene;
 
@@ -28,6 +29,7 @@ public class Main extends Application {
     private AccountScene accountScene;
     private HomeScene homeScene;
     private RegisterScene registerScene;
+    private FlightScene flightScene;
     private Stage stage;
     private Connector connector;
 
@@ -51,9 +53,11 @@ public class Main extends Application {
 	homeScene = new HomeScene(this, new BorderPane(), screenWidth, screenHeight);
 	accountScene = new AccountScene(this, new BorderPane(), screenWidth, screenHeight);
 	registerScene = new RegisterScene(this, new BorderPane(), screenWidth, screenHeight);
-
+	flightScene = new FlightScene(this, new BorderPane(), screenWidth, screenHeight);
+	
 	resizeNodes(homeScene);
 	resizeNodes(accountScene);
+	resizeNodes(flightScene);
 
 	stage.setScene(homeScene);
 
@@ -145,6 +149,10 @@ public class Main extends Application {
 
     public Stage getStage() {
 	return this.stage;
+    }
+    
+    public CustomScene getFlightScene() {
+	return flightScene;
     }
 
     public void setScreenWidth(double screenWidth) {

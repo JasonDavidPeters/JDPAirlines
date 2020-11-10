@@ -1,18 +1,19 @@
 package com.jasondavidpeters.JDPAirlines.gui;
 
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 
 import com.jasondavidpeters.JDPAirlines.Main;
+import com.jasondavidpeters.JDPAirlines.dbms.Flight;
 import com.jasondavidpeters.JDPAirlines.gui.function.AutoSuggest;
 
 import javafx.collections.FXCollections;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
-import javafx.scene.control.ListView;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
@@ -37,13 +38,15 @@ public class HomeScene extends CustomScene {
 
     private boolean loaded;
 
-    private ArrayList<String> suggestions;
+    private ArrayList<Flight> suggestions;
 
     private AutoSuggest autoSuggest;
 
+    private Flight originAirport;
+
     public HomeScene(Main main, Parent layout, double width, double height) {
 	super(main, layout, width, height);
-	suggestions = new ArrayList<String>();
+	suggestions = new ArrayList<Flight>();
 	// window - stage
 	// contents - scene
 
@@ -86,7 +89,7 @@ public class HomeScene extends CustomScene {
 	});
 
 	searchBox.setOnKeyReleased(e -> {
-	    if (searchBox.getText().isBlank()) {
+	    if (searchBox.getText().isBlank() || searchBox.getText().length() == 0) {
 		autoSuggest.setVisible(false);
 	    }
 	    for (int i = 0; i < suggestions.size(); i++) {
@@ -244,6 +247,41 @@ public class HomeScene extends CustomScene {
 
 	loadData(main.getConnector().getConnection());
 
+	/*
+	 * if search button is pressed
+	 * 
+	 */
+	searchButton.setOnAction(e -> {
+	    // if both fields are filled and match database queries
+	    // search suggestions arraylist for searchBox.gettext
+	    int found = 0;
+	    for (int i = 0; i < suggestions.size(); i++) {
+		if (suggestions.get(i).toString().equalsIgnoreCase(searchBox.getText())) {
+		    found++;
+		}
+		if (suggestions.get(i).toString().equalsIgnoreCase(roundTripSearchBox.getText())) {
+		    found++;
+		}
+		if (found == 2 && roundTrip.isSelected()) { // Round trip
+		    for (int j = 0; j < suggestions.size(); j++) {
+
+		    }
+		    ((FlightScene) main.getFlightScene()).setFlights(searchBox.getText(), roundTripSearchBox.getText());
+		    main.getStage().setScene(main.getFlightScene());
+		    ((FlightScene) main.getFlightScene()).findOriginAirport(suggestions);
+		    ((FlightScene) main.getFlightScene()).drawFlightInfo();
+		    return;
+		} else if (found == 1 && (!roundTrip.isSelected())) { // One-way
+		    ((FlightScene) main.getFlightScene()).setFlights(searchBox.getText());
+		    main.getStage().setScene(main.getFlightScene());
+		    ((FlightScene) main.getFlightScene()).findOriginAirport(suggestions);
+		    ((FlightScene) main.getFlightScene()).drawFlightInfo();
+		    return;
+		}
+	    }
+	    // search database for roundTripSearchBox.getText()
+	});
+
     }
 
     private void loadData(Connection c) {
@@ -256,10 +294,12 @@ public class HomeScene extends CustomScene {
 	    String airportName;
 	    String state;
 	    String city;
+	    BigDecimal latitude;
+	    BigDecimal longitude;
 
 	    Statement st = null;
 
-	    String query = "SELECT Code, City, State, Airport_Name FROM Flights";
+	    String query = "SELECT Code, City, State, Airport_Name,Lat,Long FROM Flights WHERE Lat IS NOT NULL";
 
 	    try {
 		st = c.createStatement();
@@ -269,7 +309,10 @@ public class HomeScene extends CustomScene {
 		    airportName = rs.getString("Airport_Name");
 		    state = rs.getString("State");
 		    city = rs.getString("City");
-		    suggestions.add(airportName + ", " + city + ", " + state + " (" + airportCode + ")");
+		    latitude = rs.getBigDecimal("Lat");
+		    longitude = rs.getBigDecimal("Long");
+		    suggestions.add(new Flight(airportName, city, state, airportCode, latitude.doubleValue(),
+			    longitude.doubleValue()));
 
 		}
 		c.close();
